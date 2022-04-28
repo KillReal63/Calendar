@@ -1,13 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
+    <title>Calendar</title>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
   </head>
-  <body class="Indent lines with tabs instead of spaces.">
-    <div id="app"></div>
-    <script type="module" src="/main.js"></script>
+  <body id="body">
+    <div id="app">
+      <header class="header">
+        <h2 class="logo">Календарь</h2>
+      </header>
+        <main class="main">
+            <form class="controls">
+                <button class="back-button">Назад</button>
+                <div class="month"></div>
+                <button class="next-button">Вперед</button>
+            </form>
+            <div class="container">
+            </div>
+        </main>
+        <footer class="footer">footer</footer>
+    </div>
   </body>
 </html>
