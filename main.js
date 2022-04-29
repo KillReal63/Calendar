@@ -1,2 +1,2 @@
-import 'style.css'
-import './variables.css'
+import './style.css';
+import './variables.css';

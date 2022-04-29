@@ -4,7 +4,6 @@ body, h1 {
 }
 
 #app {
-  background-color: var(--bg-color);
   height: 100vh;
 }
 
@@ -16,4 +15,23 @@ body, h1 {
 .logo {
   background-color: black;
   color: var(--color-highlight);
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  border: 2px solid;
+
+}
+
+.container {
+  display: flex;
+  height: 250px;
+  border: 2px solid;
+}
+
+.button {
+  margin: 5px;
 }
