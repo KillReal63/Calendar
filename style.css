@@ -19,6 +19,7 @@ body, h1 {
 
 .controls {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   height: 50px;
@@ -29,9 +30,24 @@ body, h1 {
 .container {
   display: flex;
   height: 250px;
+  width: auto;
   border: 2px solid;
+
 }
 
 .button {
   margin: 5px;
+}
+
+.days {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  height: 25px;
+  padding: 5px;
+  margin: 5px;
+  color: green;
+  border: 1px solid black;
+  border-radius: 4px;
+
 }
