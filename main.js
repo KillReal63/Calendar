@@ -1,20 +1,6 @@
 import './style.css';
 import './variables.css';
 
-const container = document.getElementById('container');
-const leftButton = document.getElementById('left-button');
-const rightButton = document.getElementById('right-button');
-rightButton.addEventListener('click', () => handleButtonClick());
-
-const handleButtonClick = side => {
-  const id = container.getAttribute('data-month-id');
-  if (id <= 11) {
-    renderMonth(year[Number(id)]);
-  } else {
-    renderMonth(year[0]);
-  }
-};
-
 const year = [
   { name: 'January', length: 31, id: 1 },
   { name: 'February', length: 28, id: 2 },
@@ -30,13 +16,19 @@ const year = [
   { name: 'December', length: 31, id: 12 },
 ];
 
-const date = year.map(({ name, length }) => {
-  const array = Array.from({ length });
-  const month = array.map((item, index) => {
+const container = document.getElementById('container');
+const leftButton = document.getElementById('left-button');
+const rightButton = document.getElementById('right-button');
+
+rightButton.addEventListener('click', () => handleButtonClick('right'));
+leftButton.addEventListener('click', () => handleButtonClick('left'));
+
+const createMonth = length => {
+  const array = Array.from({ length }).map((item, index) => {
     return { id: index + 1 };
   });
-  return { name, month };
-});
+  return array;
+};
 
 const renderMonth = ({ name: monthName, length, id: monthId }) => {
   while (container.firstChild) {
@@ -45,13 +37,30 @@ const renderMonth = ({ name: monthName, length, id: monthId }) => {
   container.setAttribute('data-month-id', monthId);
   const currentMonthName = document.getElementById('month-name');
   currentMonthName.innerText = monthName;
-  const currentMonth = date.filter(({ name }) => monthName === name);
-  currentMonth[0].month.map(({ id }) => {
+  const month = createMonth(length);
+  month.map(({ id }) => {
     const days = document.createElement('div');
     days.innerText = id;
-    days.classList.add('days');
+    days.classList.add('day');
     container.appendChild(days);
   });
+};
+
+const handleButtonClick = side => {
+  const id = container.getAttribute('data-month-id');
+  if (side === 'right') {
+    if (parseInt(id) <= 11) {
+      renderMonth(year[Number(id)]);
+    } else {
+      renderMonth(year[0]);
+    }
+  } else {
+    if (parseInt(id) === 1) {
+      renderMonth(year[11]);
+    } else {
+      renderMonth(year[Number(id) - 2]);
+    }
+  }
 };
 
 renderMonth(year[0]);

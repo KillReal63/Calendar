@@ -1,4 +1,5 @@
-body, h1 {
+body,
+h1, h2   {
   font-family: sans-serif;
   margin: 0;
 }
@@ -8,7 +9,9 @@ body, h1 {
 }
 
 .header {
-  display: flex;
+  text-align: center;
+  padding: 20px 0;
+  margin-bottom: 20px;
   background-color: black;
 }
 
@@ -20,30 +23,49 @@ body, h1 {
 .controls {
   display: flex;
   flex-wrap: wrap;
+  font-size: 20px;
+  font-weight: bold;
   justify-content: center;
   align-items: center;
   height: 50px;
-  border: 2px solid;
-
+  margin-bottom: 20px;
+  background-color: white;
 }
 
 .container {
   display: flex;
   flex-wrap: wrap;
-  height: 500px;
   width: 100%;
-  padding-left: 30px;
-  border: 2px solid;
-
+  padding-left: 15px;
 }
 
 .button {
-  margin: 5px;
+  cursor: pointer;
+  background-color: white;
+  width: 30px;
+  height: 30px;
+  border-top: 10px solid black;
+  border-right: 10px solid black;
 }
 
-.days {
+.button-right {
+  transform: rotate(+45deg);
+  border-left: 0;
+  border-bottom: 0;
+  margin-left: 20px;
+}
+
+.button-left {
+  transform: rotate(-135deg);
+  border-left: 0;
+  border-bottom: 0;
+  margin-right: 20px;
+}
+
+.day {
   display: flex;
   flex-wrap: wrap;
+  cursor: pointer;
   height: 100px;
   width: 100px;
   padding: 5px;
@@ -51,4 +73,9 @@ body, h1 {
   color: green;
   border: 1px solid black;
   border-radius: 4px;
+}
+
+.month {
+  width: 100px;
+  text-align: center;
 }
