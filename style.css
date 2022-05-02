@@ -29,8 +29,10 @@ body, h1 {
 
 .container {
   display: flex;
-  height: 250px;
-  width: auto;
+  flex-wrap: wrap;
+  height: 500px;
+  width: 100%;
+  padding-left: 30px;
   border: 2px solid;
 
 }
@@ -42,12 +44,11 @@ body, h1 {
 .days {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  height: 25px;
+  height: 100px;
+  width: 100px;
   padding: 5px;
   margin: 5px;
   color: green;
   border: 1px solid black;
   border-radius: 4px;
-
 }
