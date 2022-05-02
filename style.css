@@ -1,7 +1,12 @@
 body,
-h1, h2   {
+h1,
+h2 {
   font-family: sans-serif;
   margin: 0;
+}
+
+#body {
+  overflow: hidden;
 }
 
 #app {
@@ -75,7 +80,20 @@ h1, h2   {
   border-radius: 4px;
 }
 
+.today {
+  background-color: rgba(62,229,33,0.7);
+}
+
 .month {
   width: 100px;
   text-align: center;
+}
+
+.modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
 }

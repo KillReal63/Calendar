@@ -16,6 +16,7 @@ const year = [
   { name: 'December', length: 31, id: 12 },
 ];
 
+const body = document.getElementById('body');
 const container = document.getElementById('container');
 const leftButton = document.getElementById('left-button');
 const rightButton = document.getElementById('right-button');
@@ -30,19 +31,39 @@ const createMonth = length => {
   return array;
 };
 
+const openModal = () => {
+  const modal = document.createElement('div');
+  modal.classList.add('modal');
+  modal.addEventListener('click', () => body.removeChild(modal));
+  body.appendChild(modal);
+};
+
+const createDay = id => {
+  const today = container.getAttribute('data-current-day');
+  const getCurrentMonth = container.getAttribute('data-month-id');
+  const date = new Date();
+  const getMonth = date.getMonth();
+  const day = document.createElement('div');
+  day.innerText = id;
+  day.classList.add('day');
+  if (parseInt(today) === id && getCurrentMonth === `${getMonth + 1}`) {
+    day.classList.add('today');
+  }
+  day.addEventListener('click', openModal);
+  container.appendChild(day);
+};
+
 const renderMonth = ({ name: monthName, length, id: monthId }) => {
   while (container.firstChild) {
     container.firstChild.remove();
   }
   container.setAttribute('data-month-id', monthId);
+  container.setAttribute('data-month-name', monthName);
   const currentMonthName = document.getElementById('month-name');
   currentMonthName.innerText = monthName;
   const month = createMonth(length);
   month.map(({ id }) => {
-    const days = document.createElement('div');
-    days.innerText = id;
-    days.classList.add('day');
-    container.appendChild(days);
+    createDay(id);
   });
 };
 
@@ -63,4 +84,12 @@ const handleButtonClick = side => {
   }
 };
 
-renderMonth(year[0]);
+const app = () => {
+  const date = new Date();
+  const currentDay = date.getDay();
+  const currentMonth = date.getMonth();
+  container.setAttribute('data-current-day', `${currentDay + 1}`);
+  renderMonth(year[currentMonth]);
+};
+
+app();
