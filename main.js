@@ -16,13 +16,21 @@ const year = [
   { name: 'December', length: 31, id: 12 },
 ];
 
+const date = new Date();
+const currentDay = date.getDay() + 1;
+const currentMonth = date.getMonth() + 1;
 const body = document.getElementById('body');
 const container = document.getElementById('container');
 const leftButton = document.getElementById('left-button');
 const rightButton = document.getElementById('right-button');
 
+
+
+
 rightButton.addEventListener('click', () => handleButtonClick('right'));
 leftButton.addEventListener('click', () => handleButtonClick('left'));
+
+
 
 const createMonth = length => {
   const array = Array.from({ length }).map((item, index) => {
@@ -31,22 +39,48 @@ const createMonth = length => {
   return array;
 };
 
+const closeModal = (modal, event) => {
+  if (event.target.id === 'modal') {
+    body.removeChild(modal);
+  }
+};
+
+const createForm = event => {
+  const getMonthName = container.getAttribute('data-month-name');
+  const form = document.createElement('form');
+  form.classList.add('form');
+  form.innerHTML = `
+<div class="title">${currentDay} ${getMonthName}</div>
+<input type='text' placeholder='Title' class="input">
+<input type='text' placeholder='Description' class="input">
+<button type="submit" id="button" formtarget="_self">Add</button>
+`;
+  event.appendChild(form);
+};
+
+
+const createEvent = modal => {
+  const event = document.createElement('div');
+  event.classList.add('event');
+  createForm(event);
+  modal.appendChild(event);
+};
+
 const openModal = () => {
   const modal = document.createElement('div');
   modal.classList.add('modal');
-  modal.addEventListener('click', () => body.removeChild(modal));
+  modal.addEventListener('click', event => closeModal(modal, event));
+  modal.setAttribute('id', 'modal');
+  createEvent(modal);
   body.appendChild(modal);
 };
 
 const createDay = id => {
-  const today = container.getAttribute('data-current-day');
-  const getCurrentMonth = container.getAttribute('data-month-id');
-  const date = new Date();
-  const getMonth = date.getMonth();
+  const getMonthId = container.getAttribute('data-month-id');
   const day = document.createElement('div');
   day.innerText = id;
   day.classList.add('day');
-  if (parseInt(today) === id && getCurrentMonth === `${getMonth + 1}`) {
+  if (currentDay === id && parseInt(getMonthId) === currentMonth) {
     day.classList.add('today');
   }
   day.addEventListener('click', openModal);
@@ -85,11 +119,7 @@ const handleButtonClick = side => {
 };
 
 const app = () => {
-  const date = new Date();
-  const currentDay = date.getDay();
-  const currentMonth = date.getMonth();
-  container.setAttribute('data-current-day', `${currentDay + 1}`);
-  renderMonth(year[currentMonth]);
+  renderMonth(year[currentMonth - 1]);
 };
 
 app();

@@ -5,12 +5,9 @@ h2 {
   margin: 0;
 }
 
-#body {
-  overflow: hidden;
-}
-
 #app {
   height: 100vh;
+  overflow: hidden;
 }
 
 .header {
@@ -81,7 +78,7 @@ h2 {
 }
 
 .today {
-  background-color: rgba(62,229,33,0.7);
+  background-color: rgba(62, 229, 33, 0.7);
 }
 
 .month {
@@ -90,10 +87,40 @@ h2 {
 }
 
 .modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: absolute;
   top: 0;
   left: 0;
   height: 100%;
   width: 100%;
   background-color: rgba(0, 0, 0, 0.4);
+  box-shadow: rgba(100, 100, 111, 0.2) 0 7px 29px 0;
+}
+
+.event {
+  display: flex;
+  height: 400px;
+  width: 300px;
+  padding: 24px;
+  border-radius: 8px;
+  background-color: var(--color-highlight);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.input {
+  height: 24px;
+  padding-left: 8px;
+  margin-bottom: 20px;
 }
