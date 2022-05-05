@@ -23,10 +23,6 @@ const body = document.getElementById('body');
 const container = document.getElementById('container');
 const leftButton = document.getElementById('left-button');
 const rightButton = document.getElementById('right-button');
-
-
-
-
 rightButton.addEventListener('click', () => handleButtonClick('right'));
 leftButton.addEventListener('click', () => handleButtonClick('left'));
 
@@ -45,33 +41,49 @@ const closeModal = (modal, event) => {
   }
 };
 
-const createForm = event => {
+const onSubmit = (event, id) => {
+  let events = [];
+  event.preventDefault();
+  console.log(event);
+  const data = localStorage.getItem('items');
+  const title = event.target[0].value;
+  const description = event.target[1].value;
+  const getMonthId = container.getAttribute('data-month-id');
+  if (!data) {
+    events.push({ id: 1, title, description, dayId: id, getMonthId });
+    const array = JSON.stringify(events);
+    localStorage.setItem('items', array);
+  } else {
+    const parseData = JSON.parse(data);
+    console.log(parseData, 'test');
+    parseData.push({ id: parseData.length + 1, title, description, dayId: id, getMonthId });
+    const completeData = JSON.stringify(parseData);
+    localStorage.setItem('items', completeData);
+  }
+  // const submitButton = document.getElementById('button');
+  // submitButton.addEventListener('click', (e) => closeModal(modal, e))
+};
+
+const createForm = (modal, id) => {
   const getMonthName = container.getAttribute('data-month-name');
   const form = document.createElement('form');
   form.classList.add('form');
+  form.onsubmit = event => onSubmit(event, id, modal);
   form.innerHTML = `
-<div class="title">${currentDay} ${getMonthName}</div>
+<div class="title">${id} ${getMonthName}</div>
 <input type='text' placeholder='Title' class="input">
 <input type='text' placeholder='Description' class="input">
 <button type="submit" id="button" formtarget="_self">Add</button>
 `;
-  event.appendChild(form);
+  modal.appendChild(form);
 };
 
-
-const createEvent = modal => {
-  const event = document.createElement('div');
-  event.classList.add('event');
-  createForm(event);
-  modal.appendChild(event);
-};
-
-const openModal = () => {
+const openModal = id => {
   const modal = document.createElement('div');
   modal.classList.add('modal');
   modal.addEventListener('click', event => closeModal(modal, event));
   modal.setAttribute('id', 'modal');
-  createEvent(modal);
+  createForm(modal, id);
   body.appendChild(modal);
 };
 
@@ -83,7 +95,7 @@ const createDay = id => {
   if (currentDay === id && parseInt(getMonthId) === currentMonth) {
     day.classList.add('today');
   }
-  day.addEventListener('click', openModal);
+  day.addEventListener('click', () => openModal(id));
   container.appendChild(day);
 };
 
