@@ -135,7 +135,6 @@ const createItem = () => {
       const affairsItem = document.createElement('div');
       affairsItem.classList.add('affairs-item');
       affairsItem.innerHTML = `
-      <div class='affairs-item'>
       <div>${dayId} ${getMonthName}</div>
       <div>${title}</div>
       <div>${description}</div>
