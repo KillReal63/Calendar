@@ -23,10 +23,10 @@ const body = document.getElementById('body');
 const container = document.getElementById('container');
 const leftButton = document.getElementById('left-button');
 const rightButton = document.getElementById('right-button');
+const refreshClick = document.createElement('refresh-click');
 rightButton.addEventListener('click', () => handleButtonClick('right'));
 leftButton.addEventListener('click', () => handleButtonClick('left'));
-
-
+refreshClick.addEventListener('click', () => onSubmit);
 
 const createMonth = length => {
   const array = Array.from({ length }).map((item, index) => {
@@ -41,27 +41,24 @@ const closeModal = (modal, event) => {
   }
 };
 
-const onSubmit = (event, id) => {
+const onSubmit = (event, id, modal) => {
   let events = [];
-  event.preventDefault();
-  console.log(event);
   const data = localStorage.getItem('items');
   const title = event.target[0].value;
   const description = event.target[1].value;
   const getMonthId = container.getAttribute('data-month-id');
+  const getMonthName = container.getAttribute('data-month-name');
   if (!data) {
-    events.push({ id: 1, title, description, dayId: id, getMonthId });
+    events.push({ id: 1, title, description, dayId: id, getMonthId, getMonthName });
     const array = JSON.stringify(events);
     localStorage.setItem('items', array);
   } else {
     const parseData = JSON.parse(data);
-    console.log(parseData, 'test');
-    parseData.push({ id: parseData.length + 1, title, description, dayId: id, getMonthId });
+    parseData.push({ id: parseData.length + 1, title, description, dayId: id, getMonthId, getMonthName });
     const completeData = JSON.stringify(parseData);
     localStorage.setItem('items', completeData);
   }
-  // const submitButton = document.getElementById('button');
-  // submitButton.addEventListener('click', (e) => closeModal(modal, e))
+  body.removeChild(modal);
 };
 
 const createForm = (modal, id) => {
@@ -130,8 +127,28 @@ const handleButtonClick = side => {
   }
 };
 
+const createItem = () => {
+  const affairs = document.getElementById('affairs');
+  const data = localStorage.getItem('items');
+  const item = JSON.parse(data);
+  if (data) {
+    item.map(({ dayId, getMonthName, title, description }) => {
+      const affairsItem = document.createElement('div');
+      affairsItem.innerHTML = `
+      <div class='affairs-item'>
+      <div>${dayId} ${getMonthName}</div>
+      <div>${title}</div>
+      <div>${description}</div>
+      </div>
+      `;
+      affairs.appendChild(affairsItem);
+    });
+  }
+};
+
 const app = () => {
   renderMonth(year[currentMonth - 1]);
 };
 
+createItem();
 app();

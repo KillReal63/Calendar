@@ -41,6 +41,12 @@ h2 {
   padding-left: 15px;
 }
 
+.affairs {
+  height: 300px;
+  width: 100%;
+  border: 2px solid black;
+}
+
 .button {
   cursor: pointer;
   background-color: white;
