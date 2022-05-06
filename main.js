@@ -23,10 +23,8 @@ const body = document.getElementById('body');
 const container = document.getElementById('container');
 const leftButton = document.getElementById('left-button');
 const rightButton = document.getElementById('right-button');
-const refreshClick = document.createElement('refresh-click');
 rightButton.addEventListener('click', () => handleButtonClick('right'));
 leftButton.addEventListener('click', () => handleButtonClick('left'));
-refreshClick.addEventListener('click', () => onSubmit);
 
 const createMonth = length => {
   const array = Array.from({ length }).map((item, index) => {
@@ -59,6 +57,7 @@ const onSubmit = (event, id, modal) => {
     localStorage.setItem('items', completeData);
   }
   body.removeChild(modal);
+  location.reload();
 };
 
 const createForm = (modal, id) => {
@@ -134,6 +133,7 @@ const createItem = () => {
   if (data) {
     item.map(({ dayId, getMonthName, title, description }) => {
       const affairsItem = document.createElement('div');
+      affairsItem.classList.add('affairs-item');
       affairsItem.innerHTML = `
       <div class='affairs-item'>
       <div>${dayId} ${getMonthName}</div>

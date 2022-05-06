@@ -42,9 +42,18 @@ h2 {
 }
 
 .affairs {
-  height: 300px;
+  height: 750px;
   width: 100%;
   border: 2px solid black;
+}
+
+.affairs-item {
+  display: inline-block;
+  width: 100px;
+  margin: 10px;
+  padding: 5px;
+  border: 2px solid red;
+  border-radius: 10px;
 }
 
 .button {
