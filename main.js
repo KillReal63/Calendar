@@ -17,7 +17,7 @@ const year = [
 ];
 
 const date = new Date();
-const currentDay = date.getDay() + 1;
+const currentDay = date.getDate();
 const currentMonth = date.getMonth() + 1;
 const body = document.getElementById('body');
 const container = document.getElementById('container');
@@ -40,6 +40,7 @@ const closeModal = (modal, event) => {
 };
 
 const onSubmit = (event, id, modal) => {
+  event.preventDefault();
   let events = [];
   const data = localStorage.getItem('items');
   const title = event.target[0].value;
@@ -47,12 +48,12 @@ const onSubmit = (event, id, modal) => {
   const getMonthId = container.getAttribute('data-month-id');
   const getMonthName = container.getAttribute('data-month-name');
   if (!data) {
-    events.push({ id: 1, title, description, dayId: id, getMonthId, getMonthName });
+    events.push({ id: 1, title, description, dayId: id, getMonthId, monthName: getMonthName });
     const array = JSON.stringify(events);
     localStorage.setItem('items', array);
   } else {
     const parseData = JSON.parse(data);
-    parseData.push({ id: parseData.length + 1, title, description, dayId: id, getMonthId, getMonthName });
+    parseData.push({ id: parseData.length + 1, title, description, dayId: id, getMonthId, monthName: getMonthName });
     const completeData = JSON.stringify(parseData);
     localStorage.setItem('items', completeData);
   }
@@ -60,38 +61,79 @@ const onSubmit = (event, id, modal) => {
   location.reload();
 };
 
-const createForm = (modal, id) => {
+const onEdit = (event, id, getMonthName) => {
+  const title = event.target[0].value;
+  const description = event.target[1].value;
+}
+
+const createForm = (modal, id, isEvent) => {
   const getMonthName = container.getAttribute('data-month-name');
+  const data = localStorage.getItem('items');
   const form = document.createElement('form');
   form.classList.add('form');
-  form.onsubmit = event => onSubmit(event, id, modal);
-  form.innerHTML = `
+  if (data && isEvent) {
+    const items = JSON.parse(data);
+    const [item] = items.filter(item => {
+      if (id === item.dayId) return item;
+    });
+    form.innerHTML = `
 <div class="title">${id} ${getMonthName}</div>
-<input type='text' placeholder='Title' class="input">
-<input type='text' placeholder='Description' class="input">
+<input type='text' id='title' value=${item.title} placeholder='Title'  class="input">
+<input type='text' id='description' value=${item.description} placeholder='Description' class="input">
+<button type="submit" id="button" formtarget="_self">edit</button>
+`;
+    form.onsubmit = event => onEdit(event, id, getMonthName);
+  } else {
+    form.innerHTML = `
+<div class="title">${id} ${getMonthName}</div>
+<input type='text' id='title'  placeholder='Title'  class="input">
+<input type='text' id='description' placeholder='Description' class="input">
 <button type="submit" id="button" formtarget="_self">Add</button>
 `;
+    form.onsubmit = event => onSubmit(event, id, getMonthName);
+  }
   modal.appendChild(form);
 };
 
-const openModal = id => {
+const openModal = (id, isEvent) => {
   const modal = document.createElement('div');
   modal.classList.add('modal');
   modal.addEventListener('click', event => closeModal(modal, event));
   modal.setAttribute('id', 'modal');
-  createForm(modal, id);
+  createForm(modal, id, isEvent);
   body.appendChild(modal);
 };
 
 const createDay = id => {
   const getMonthId = container.getAttribute('data-month-id');
   const day = document.createElement('div');
+  day.setAttribute('data-event-send', 'false');
+  const data = localStorage.getItem('items');
   day.innerText = id;
   day.classList.add('day');
+  if (data) {
+    const array = JSON.parse(data);
+    const item = array.filter(item => {
+      if (item.dayId === id) return item;
+    });
+    if (item.length !== 0 && getMonthId === item[0].getMonthId && item[0].dayId === id) {
+      const dayEvent = item[0];
+      day.setAttribute('data-event-send', 'true');
+      day.classList.add('event-day');
+      day.innerHTML = `
+    <div>${dayEvent.dayId} ${dayEvent.monthName}</div>
+    <div>${dayEvent.title}</div>
+    <div>${dayEvent.description}</div>
+    `;
+    }
+  }
+
   if (currentDay === id && parseInt(getMonthId) === currentMonth) {
     day.classList.add('today');
   }
-  day.addEventListener('click', () => openModal(id));
+  const isEventDay = day.getAttribute('data-event-send');
+  const isEvent = isEventDay === 'true';
+  day.addEventListener('click', () => openModal(id, isEvent));
   container.appendChild(day);
 };
 
@@ -131,11 +173,11 @@ const createItem = () => {
   const data = localStorage.getItem('items');
   const item = JSON.parse(data);
   if (data) {
-    item.map(({ dayId, getMonthName, title, description }) => {
+    item.map(({ dayId, monthName, title, description }) => {
       const affairsItem = document.createElement('div');
       affairsItem.classList.add('affairs-item');
       affairsItem.innerHTML = `
-      <div>${dayId} ${getMonthName}</div>
+      <div>${dayId} ${monthName}</div>
       <div>${title}</div>
       <div>${description}</div>
       </div>
